@@ -26,15 +26,13 @@ func main() {
 		log.Println("Unmarshal error", err)
 	}
 
-	keyLocalize := `
-	import 'dart:ui';
+	keyLocalize := "import 'dart:ui';\n\n"
+	keyLocalize = keyLocalize + "import 'package:%s/localization/base_localizations.dart';\n\n"
+	keyLocalize = keyLocalize + "class KeyLocalizations extends BaseLocalizations {\n"
+	keyLocalize = keyLocalize + "  KeyLocalizations(Locale locale) : super(locale);\n"
+	keyLocalize = keyLocalize + "  %s\n"
+	keyLocalize = keyLocalize + "}"
 
-	import 'package:%s/localization/base_localizations.dart';
-
-	class KeyLocalizations extends BaseLocalizations {
-	  KeyLocalizations(Locale locale) : super(locale);
-	  %s
-	}`
 	localize := ""
 	for key := range maps {
 
@@ -50,7 +48,7 @@ func main() {
 			keyName = keyName + first + second
 		}
 
-		localize = localize + fmt.Sprintf("\n    String get %s => translate(\"%s\");", keyName, key)
+		localize = localize + fmt.Sprintf("\n  String get %s => translate(\"%s\");", keyName, key)
 	}
 
 	if err := ioutil.WriteFile(*target, []byte(fmt.Sprintf(keyLocalize, *appname, localize)), 0644); err != nil {
