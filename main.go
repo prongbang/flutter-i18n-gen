@@ -36,7 +36,7 @@ func main() {
 	}`
 	localize := ""
 	for key := range maps {
-		localize = localize + fmt.Sprintf("String get %s => translate(\"%s\");", key, key)
+		localize = localize + fmt.Sprintf("\n    String get %s => translate(\"%s\");", key, key)
 	}
 
 	if err := ioutil.WriteFile(*target, []byte(fmt.Sprintf(keyLocalize, *appname, localize)), 0644); err != nil {
