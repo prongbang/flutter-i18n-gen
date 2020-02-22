@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"strings"
 )
 
 func main() {
@@ -36,7 +37,20 @@ func main() {
 	}`
 	localize := ""
 	for key := range maps {
-		localize = localize + fmt.Sprintf("\n    String get %s => translate(\"%s\");", key, key)
+
+		keys := strings.Split(key, "_")
+		keyName := ""
+		for i := 0; i < len(keys); i++ {
+			if i == 0 {
+				keyName = keys[i]
+				continue
+			}
+			first := strings.ToUpper(keys[i][0:1])
+			second := keys[i][1:]
+			keyName = keyName + first + second
+		}
+
+		localize = localize + fmt.Sprintf("\n    String get %s => translate(\"%s\");", keyName, key)
 	}
 
 	if err := ioutil.WriteFile(*target, []byte(fmt.Sprintf(keyLocalize, *appname, localize)), 0644); err != nil {

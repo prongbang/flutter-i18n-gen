@@ -7,5 +7,6 @@
 	  KeyLocalizations(Locale locale) : super(locale);
 	  
     String get title => translate("title");
-    String get message => translate("message");
+    String get firstSecond => translate("first_second");
+    String get firstSecondLast => translate("first_second_last");
 	}
